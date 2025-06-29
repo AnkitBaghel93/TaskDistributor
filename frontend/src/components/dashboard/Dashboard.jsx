@@ -23,7 +23,7 @@ const Dashboard = () => {
       }
 
       try {
-        const res = await fetch(`http://localhost:5000/api/agents/${userId}`, {
+        const res = await fetch(`https://taskdistributor-backend-ukj6.onrender.com/api/agents/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -48,7 +48,7 @@ const Dashboard = () => {
   const handleDelete = async (agentId) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/agents/${agentId}`, {
+      const res = await fetch(`https://taskdistributor-backend-ukj6.onrender.com/api/agents/${agentId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ const Dashboard = () => {
     console.log('Saving...', editData);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/agents/${editData._id}`, {
+      const res = await fetch(`https://taskdistributor-backend-ukj6.onrender.com/api/agents/${editData._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ const Dashboard = () => {
 useEffect(() => {
     const fetchTasks = async () => {
     const token = localStorage.getItem('token');
-    const res = await fetch(`http://localhost:5000/api/tasks/user`, {
+    const res = await fetch(`https://taskdistributor-backend-ukj6.onrender.com/api/tasks/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
         },
