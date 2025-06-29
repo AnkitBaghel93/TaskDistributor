@@ -1,0 +1,26 @@
+.bubble-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: floatUp linear infinite;
+}
+
+/* Keyframe animation to move up and drift */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(var(--drift, 0px));
+    opacity: 0;
+  }
+}
