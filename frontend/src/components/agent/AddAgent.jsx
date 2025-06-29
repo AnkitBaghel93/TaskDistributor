@@ -18,7 +18,7 @@ const AddAgent = () => {
     const fetchAgents = async () => {
       try {
           const token = localStorage.getItem('token');
-          const res = await fetch(`http://localhost:5000/api/agents/${userId}`, {
+          const res = await fetch(`https://taskdistributor-backend-ukj6.onrender.com/api/agents/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`, // ✅ pass it here
            },
@@ -49,7 +49,7 @@ const AddAgent = () => {
     return;
   }
 
-    const response = await fetch('http://localhost:5000/api/agents/create', {
+    const response = await fetch('https://taskdistributor-backend-ukj6.onrender.com/api/agents/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const handleUpload = () => {
       // Store in backend
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/tasks/upload', {
+        const res = await fetch('https://taskdistributor-backend-ukj6.onrender.com/api/tasks/upload', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
