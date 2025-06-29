@@ -12,15 +12,25 @@ Live Demo
 
 
 ├── backend
+
 │   ├── models/
+
 │   ├── routes/
+
 │   ├── controllers/
+
 │   ├── server.js
+
 │   └── .env
+
 └── frontend
+
     ├── src/
+    
     ├── public/
+    
     ├── package.json
+    
     └── tailwind.config.js
 
 
