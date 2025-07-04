@@ -9,7 +9,7 @@ const AllTask = () => {
       const token = localStorage.getItem('token');
 
       try {
-        const res = await fetch('http://localhost:5000/api/tasks/user', {
+        const res = await fetch('https://taskdistributor-backend-ukj6.onrender.com/api/tasks/user', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
