@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import './BubbleBackground.css';
 
 const Home = () => {
@@ -13,6 +15,15 @@ const Home = () => {
     }, 100); 
     return () => clearTimeout(timeout);
   }, []);
+
+    const handleAddAgentClick = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error("Please log in to continue and add an agent.");
+    } else {
+      navigate('/add-agent');
+    }
+  };
 
   const bubbles = Array.from({ length: 20 }).map((_, index) => {
     const size = Math.random() * 60 + 20;
@@ -51,7 +62,7 @@ const Home = () => {
           Accelerate your task distribution with smart automation and agent-driven productivity.
         </p>
         <button
-          onClick={() => navigate('/add-agent')}
+         onClick={handleAddAgentClick}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition"
         >
           Add Agent
