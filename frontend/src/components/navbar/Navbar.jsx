@@ -13,7 +13,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/logout', {
+      const res = await fetch('https://taskdistributor-backend-ukj6.onrender.com/api/logout', {
         method: 'POST',
         credentials: 'include', // to send cookies
       });
