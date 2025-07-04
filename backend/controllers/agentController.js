@@ -1,4 +1,5 @@
 const Agent = require('../models/agent');
+const Task = require('../models/task'); // <-- Add this line to import Task model
 
 //@route to create an agent in database
 exports.createAgent = async (req, res) => {
@@ -41,10 +42,17 @@ exports.updateAgent = async (req, res) => {
 exports.deleteAgent = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Step 1: Delete tasks associated with this agent
+    await Task.deleteMany({ agentId: id });
+
+    // Step 2: Delete the agent
     await Agent.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Agent deleted successfully' });
+
+    res.status(200).json({ message: 'Agent and their tasks deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to delete agent' });
+    console.error('Error deleting agent and tasks:', error);
+    res.status(500).json({ message: 'Failed to delete agent and their tasks' });
   }
 };
 
