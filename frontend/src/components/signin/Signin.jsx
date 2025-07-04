@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BiShow ,BiHide} from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../AuthContext';
 
 const Signin = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const Signin = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); 
+  const { setUser } = useAuth();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -46,6 +48,7 @@ const handleSubmit = async (e) => {
       
       // Store userId properly
       localStorage.setItem('userId', userId); 
+       setUser({ token, id: userId });
       alert('Login successful');
       navigate('/dashboard');
     } else {
