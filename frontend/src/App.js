@@ -9,6 +9,7 @@ import Signup from './components/signup/Signup';
 import AddAgent from './components/agent/AddAgent';
 import Dashboard from './components/dashboard/Dashboard';
 import Footer from './components/footer/Footer';
+import AllTask from './components/AllTask';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,6 +40,7 @@ function App() {
                               />
                             }
                           />
+                                    <Route path="/all-tasks" element={<AllTask/>} />
                     <Route path="/dashboard" element={<Dashboard agents={agents} setAgents={setAgents} />} />
               </Routes>
 
