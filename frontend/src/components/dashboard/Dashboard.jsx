@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
   const [agents, setAgents] = useState([]);
@@ -117,52 +118,132 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-6 py-12">
       <ToastContainer />
-      <h1 className="text-3xl font-bold text-blue-700 mb-10 text-center">Agent List : {agents.length}</h1>
+      <h1 className="text-3xl font-bold text-blue-700 mb-10 text-center">Agent List: {agents.length}</h1>
 
       {agents.length === 0 ? (
         <p className="text-center text-gray-600 text-base sm:text-lg">No agents available.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center">
-          {agents.map((agent) => (
-            <div
-              key={agent._id}
-              className="bg-white shadow-md rounded-xl p-5 flex flex-col justify-between relative"
+        <div className="overflow-x-auto shadow-md">
+          <table className="min-w-full bg-white shadow-md rounded-xl">
+            <thead className="bg-blue-100">
+              <tr>
+                <th className="text-left py-3 px-4 font-semibold text-blue-800">Name</th>
+                <th className="text-left py-3 px-4 font-semibold text-blue-800">Email</th>
+                <th className="text-left py-3 px-4 font-semibold text-blue-800">Phone</th>
+                <th className="text-left py-3 px-4 font-semibold text-blue-800">Tasks</th>
+                <th className="text-left py-3 px-4 font-semibold text-blue-800">Actions</th>
+              </tr>
+            </thead>
+
+<tbody>
+  {agents.map((agent) => (
+    <>
+      <tr key={agent._id} className="border-t hover:bg-blue-50">
+        {editId === agent._id ? (
+            <>
+              <td className="py-2 px-4">
+                <input type="text" name="name" value={editData.name} onChange={handleEditChange} className="p-1 border rounded w-full" />
+              </td>
+              <td className="py-2 px-4">
+                <input type="email" name="email" value={editData.email} onChange={handleEditChange} className="p-1 border rounded w-full" />
+              </td>
+              <td className="py-2 px-4">
+                <input type="text" name="phone" value={editData.phone} onChange={handleEditChange} className="p-1 border rounded w-full" />
+              </td>
+              <td className="py-2 px-4 text-gray-600">
+                {tasks[agent._id]?.length || 0}
+              </td>
+              <td className="py-2 px-4">
+                <button
+                  onClick={handleEditSave}
+                  className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                >
+                  Save
+                </button>
+              </td>
+            </>
+        ) : (
+          <>
+            <td className="py-2 px-4">{capitalizeName(agent.name)}</td>
+            <td className="py-2 px-4">{agent.email}</td>
+            <td className="py-2 px-4">{agent.phone}</td>
+            <td
+              className="py-2 px-4 text-blue-600 font-semibold cursor-pointer"
+              onClick={() =>
+                setSelectedAgent(
+                  selectedAgent && selectedAgent._id === agent._id ? null : agent
+                )
+              }
             >
-              {editId === agent._id ? (
-                <>
-                  <input type="text" name="name" value={editData.name} onChange={handleEditChange} className="mb-2 p-2 border rounded" />
-                  <input type="email" name="email" value={editData.email} onChange={handleEditChange} className="mb-2 p-2 border rounded" />
-                  <input type="text" name="phone" value={editData.phone} onChange={handleEditChange} className="mb-4 p-2 border rounded" />
-                  <button onClick={handleEditSave} className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">Save</button>
-                </>
+              {tasks[agent._id]?.length || 0} {tasks[agent._id]?.length > 0 ? '➜' : ''}
+            </td>
+            <td className="py-2 px-4 flex gap-3 items-center">
+              <button
+                onClick={() => handleEditClick(agent)}
+                className="text-blue-600 hover:text-blue-800"
+                title="Edit"
+              >
+                <FiEdit size={18} />
+              </button>
+              <button
+                onClick={() => handleDelete(agent._id)}
+                className="text-red-600 hover:text-red-800"
+                title="Delete"
+              >
+                <FiTrash2 size={18} />
+              </button>
+            </td>
+          </>
+        )}
+      </tr>
+
+      {/*Expanded Task Row (if selectedAgent matches) */}
+      {selectedAgent && selectedAgent._id === agent._id && (
+        <tr className="bg-blue-50 border-t">
+          <td colSpan="5" className="p-4">
+            <div>
+              <h3 className="text-lg font-bold text-blue-700 mb-2">
+                {capitalizeName(selectedAgent.name)}'s Tasks
+              </h3>
+              {tasks[agent._id]?.length > 0 ? (
+                <table className="w-full text-sm border border-gray-200 rounded overflow-hidden">
+                  <thead className="bg-blue-100 text-blue-800">
+                    <tr>
+                      <th className="py-2 px-3 text-left">#</th>
+                      <th className="py-2 px-3 text-left">Name</th>
+                      <th className="py-2 px-3 text-left">Phone</th>
+                      <th className="py-2 px-3 text-left">Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tasks[agent._id].map((task, index) => (
+                      <tr key={index} className="hover:bg-blue-100">
+                        <td className="py-2 px-3">{index + 1}</td>
+                        <td className="py-2 px-3">{task.firstName}</td>
+                        <td className="py-2 px-3">{task.phone}</td>
+                        <td className="py-2 px-3">{task.notes}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               ) : (
-                <>
-                  <h2 className="text-xl font-semibold text-blue-700">{capitalizeName(agent.name)}</h2>
-
-                  <button
-                    onClick={() => setSelectedAgent(agent)}
-                    className="mt-3 inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium px-4 py-1 rounded-full hover:shadow-md transition-all duration-300"
-                  >
-                    View Details
-                  </button>
-
-                  <div className="absolute top-3 right-3 flex gap-3">
-                    <button onClick={() => handleEditClick(agent)} className="text-blue-600 hover:text-blue-800" title="Edit">
-                      <FiEdit size={18} />
-                    </button>
-                    <button onClick={() => handleDelete(agent._id)} className="text-red-600 hover:text-red-800" title="Delete">
-                      <FiTrash2 size={18} />
-                    </button>
-                  </div>
-                </>
+                <p className="text-sm text-gray-600">No tasks assigned.</p>
               )}
             </div>
-          ))}
+          </td>
+        </tr>
+      )}
+    </>
+  ))}
+</tbody>
+
+
+          </table>
         </div>
       )}
 
       {/* MODAL */}
-      {selectedAgent && (
+      {/* {selectedAgent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full relative m-4">
             <button
@@ -189,7 +270,9 @@ const Dashboard = () => {
             )}
           </div>
         </div>
-      )}
+      )} */}
+
+
     </div>
   );
 };
