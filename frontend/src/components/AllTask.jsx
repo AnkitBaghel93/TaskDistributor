@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AllTask = () => {
   const [tasks, setTasks] = useState([]);
@@ -30,36 +31,48 @@ const AllTask = () => {
     fetchTasks();
   }, []);
 
+  const capitalize = (str) =>
+    str?.split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-6 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-4 sm:px-6 py-10">
       <ToastContainer />
-      <h1 className="text-3xl font-bold text-blue-700 mb-6 text-center">
-        Total Tasks ({tasks.length})
+      <h1 className="text-3xl font-bold text-blue-700 text-center mb-8">
+        All Tasks ({tasks.length})
       </h1>
 
       {tasks.length === 0 ? (
         <p className="text-center text-gray-600 text-base">No tasks found.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {tasks.map((task, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-lg shadow p-4 border border-blue-100"
-            >
-              <h2 className="text-lg font-semibold text-blue-700 mb-2">
-                {task.firstName}
-              </h2>
-              <p className="text-gray-700 text-sm">
-                <strong>Phone:</strong> {task.phone}
-              </p>
-              <p className="text-gray-700 text-sm">
-                <strong>Email:</strong> {task.email}
-              </p>
-              <p className="text-gray-700 text-sm">
-                <strong>Notes:</strong> {task.notes}
-              </p>
-            </div>
-          ))}
+        <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-blue-100">
+              <tr>
+                <th className="px-4 py-3 text-left font-semibold text-blue-700">#</th>
+                <th className="px-4 py-3 text-left font-semibold text-blue-700">Name</th>
+                <th className="px-4 py-3 text-left font-semibold text-blue-700">Phone</th>
+                
+                <th className="px-4 py-3 text-left font-semibold text-blue-700">Notes</th>
+                <th className="px-4 py-3 text-left font-semibold text-blue-700">Assigned Agent</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {tasks.map((task, idx) => (
+                <tr key={idx} className="hover:bg-blue-50">
+                  <td className="px-4 py-2 font-medium text-gray-600">{idx + 1}</td>
+                  <td className="px-4 py-2">{capitalize(task.firstName)}</td>
+                  <td className="px-4 py-2">{task.phone}</td>
+                  
+                  <td className="px-4 py-2 text-sm text-gray-700">{task.notes}</td>
+                  <td className="px-4 py-2 font-semibold text-blue-600">
+                    {task.agentId?.name
+                      ? capitalize(task.agentId.name)
+                      : 'Unassigned'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
